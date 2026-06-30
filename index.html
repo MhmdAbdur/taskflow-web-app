@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="layout-wrapper">
+        
+        <!-- Mobile Header (Visible only on small screens) -->
+        <header class="mobile-header">
+            <h2>Task<span style="color:#7F77DD;">Flow</span></h2>
+            <button id="mobile-menu-btn" class="mobile-menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open')">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+        </header>
+
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>Task<span class="highlight">Flow</span></h2>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a class="nav-item filter-btn active" data-filter="all">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <rect x="3" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="14" width="7" height="7"></rect>
+                        <rect x="3" y="14" width="7" height="7"></rect>
+                    </svg>
+                    All Tasks
+                </a>
+                <a class="nav-item filter-btn" data-filter="active">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    Active
+                </a>
+                <a class="nav-item filter-btn" data-filter="completed">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    Completed
+                </a>
+            </nav>
+
+            <div class="sidebar-categories">
+                <h3>Categories</h3>
+                <div class="category-list">
+                    <div class="category-item"><span class="dot dot-work"></span> Work</div>
+                    <div class="category-item"><span class="dot dot-personal"></span> Personal</div>
+                    <div class="category-item"><span class="dot dot-study"></span> Study</div>
+                    <div class="category-item"><span class="dot dot-academic"></span> Academic</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <header class="top-bar">
+                <h1 class="page-title">All tasks</h1>
+                
+                <div class="filter-row">
+                    <div class="status-filters">
+                        <button class="filter-pill active filter-btn" data-filter="all">All</button>
+                        <button class="filter-pill filter-btn" data-filter="active">Active</button>
+                        <button class="filter-pill filter-btn" data-filter="completed">Completed</button>
+                    </div>
+                    
+                    <div class="category-filter">
+                        <select id="filter-category" class="form-select">
+                            <option value="">All Categories</option>
+                            <option value="Work">Work</option>
+                            <option value="Personal">Personal</option>
+                            <option value="Study">Study</option>
+                            <option value="Academic">Academic</option>
+                        </select>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Add Task Form -->
+            <section class="task-form-section">
+                <form id="add-task-form" class="task-form">
+                    <div class="input-group">
+                        <input type="text" id="task-input" placeholder="What needs to be done?" autocomplete="off">
+                        <div id="error-message" class="error-message hidden">Task description cannot be empty</div>
+                    </div>
+                    
+                    <div class="controls-row">
+                        <select id="category-select" class="form-select">
+                            <option value="Personal">Personal</option>
+                            <option value="Work">Work</option>
+                            <option value="Study">Study</option>
+                            <option value="Academic">Academic</option>
+                        </select>
+                        
+                        <select id="priority-select" class="form-select">
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
+                            <option value="Low">Low</option>
+                        </select>
+                        
+                        <button type="submit" class="btn-add">Add</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Task List Area -->
+            <section class="task-list-section">
+                <div id="loading-spinner" class="loading-spinner hidden">Loading tasks...</div>
+                
+                <div id="task-list" class="task-list">
+                    <!-- Tasks will be injected here by JS -->
+                </div>
+                
+                <!-- Empty State -->
+                <div id="empty-state" class="empty-state hidden">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path>
+                        <path d="M9 12l2 2 4-4"></path>
+                    </svg>
+                    <p>You're all caught up!</p>
+                </div>
+            </section>
+
+            <!-- Footer Bar -->
+            <footer class="footer-bar">
+                <div id="task-count" class="task-count">0 tasks remaining</div>
+                <div>TaskFlow App</div>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- App Script -->
+    <script src="app.js"></script>
+</body>
+</html>
